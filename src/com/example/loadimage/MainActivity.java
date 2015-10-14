@@ -22,7 +22,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -157,6 +156,9 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
 							int position, long id) {
 						ListItemCustom newsData = (ListItemCustom) listView
 								.getItemAtPosition(position);
+						Intent i = new Intent(getApplicationContext(),
+								Product_detail.class);
+						startActivity(i);
 						Toast.makeText(MainActivity.this,
 								"Selected :" + " " + newsData,
 								Toast.LENGTH_LONG).show();

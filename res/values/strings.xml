@@ -25,4 +25,6 @@
         <item>Life convict can`t claim freedom after 14 yrs: SC</item>
     </array>
 
+    <string name="title_activity_product_detail">Product_detail</string>
+
 </resources>
