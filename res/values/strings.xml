@@ -3,7 +3,8 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="app_name">Async ListView</string>
+    <string name="app_name">Loadimage</string>
+    <string name="action_refresh">Refresh</string>
 
     <array name="images_array">
         <item>http://lh5.ggpht.com/_hepKlJWopDg/TB-_WXikaYI/AAAAAAAAElI/715k4NvBM4w/s144-c/IMG_0075.JPG</item>
