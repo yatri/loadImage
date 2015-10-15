@@ -32,11 +32,14 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements SwipeRefreshLayout.OnRefreshListener{
 	Context context;
+	int categoryid;
 	JSONParser jsonParser = new JSONParser();
-	String TAG_URL = "url";
+	String TAG_URL = "imageurl";
 	String urllist = "";
 	String headline = "";
-	String TAG_HEADLINES = "headlines";
+	String productid = "";
+	String TAG_HEADLINES = "imageheading";
+	String TAG_ID = "prod_id";
 	private int jsonstatus = 0;
 	private static String login_page = "http://192.168.40.80:81/loginapi/index.php/loadimage";
 	private ProgressDialog pDialog;
@@ -48,6 +51,9 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		Intent intent= getIntent();
+		categoryid= intent.getIntExtra("id",999);
+		//System.out.println(categoryid);
 		swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 		swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
@@ -76,12 +82,13 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
 
 		JSONArray imageurl;
 		JSONArray imageheadline;
+		JSONArray productidarry;
 		private Context mContext;
 
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(MainActivity.this);
-			pDialog.setMessage("Login. Please wait...");
+			pDialog.setMessage("Please wait...");
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(false);
 			pDialog.show();
@@ -90,9 +97,9 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
 		@Override
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("name", "ravindra"));
+			params.add(new BasicNameValuePair("cat_id", String.valueOf(categoryid)));
 
-			Log.d("state", "beforehttp");
+			//Log.d("state", "beforehttp");
 			// Note that create product url accepts POST method
 			JSONObject json = jsonParser.makeHttpRequest(login_page, "POST",
 					params);
@@ -103,10 +110,11 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
 				try {
 					urllist = json.getString(TAG_URL);
 					headline = json.getString(TAG_HEADLINES);
+					productid = json.getString(TAG_ID);
 					imageurl = new JSONArray(urllist);
 					imageheadline = new JSONArray(headline);
-					// JSONObject imageheadline = new JSONObject(urllist);
-					// Log.d("url", imageheadline.toString());
+					productidarry = new JSONArray(productid);
+					 Log.d("productid", productidarry.toString());
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -134,9 +142,10 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
 
 						// Log.d("url",imageurl.getString(i));
 						// Log.d("headline",imageheadline.getString(i));
+						newsData.setProductID(productidarry.getInt(i));
 						newsData.setUrl(imageurl.getString(i));
 						newsData.setHeadline(imageheadline.getString(i));
-						newsData.setReporterName("Ravindra ");
+						//newsData.setReporterName("Ravindra ");
 						newsData.setDate("May 26, 2013, 13:35");
 
 					} catch (JSONException e) {
@@ -158,10 +167,12 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
 								.getItemAtPosition(position);
 						Intent i = new Intent(getApplicationContext(),
 								Product_detail.class);
+						System.out.println(newsData.getProductID());
+						i.putExtra("prod_id",newsData.getProductID());
 						startActivity(i);
-						Toast.makeText(MainActivity.this,
-								"Selected :" + " " + newsData,
-								Toast.LENGTH_LONG).show();
+						// Toast.makeText(MainActivity.this,
+						// "Selected :" + " " + newsData,
+						// Toast.LENGTH_LONG).show();
 					}
 				});
 				// Log.d("headline", listMockData.toString());

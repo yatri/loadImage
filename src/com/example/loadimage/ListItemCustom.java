@@ -2,8 +2,8 @@ package com.example.loadimage;
 
 public class ListItemCustom {
 
+	private int productID;
 	private String headline;
-	private String reporterName;
 	private String date;
 	private String url;
 
@@ -22,15 +22,6 @@ public class ListItemCustom {
 	public void setHeadline(String headline) {
 		this.headline = headline;
 	}
-
-	public String getReporterName() {
-		return reporterName;
-	}
-
-	public void setReporterName(String reporterName) {
-		this.reporterName = reporterName;
-	}
-
 	public String getDate() {
 		return date;
 	}
@@ -39,8 +30,19 @@ public class ListItemCustom {
 		this.date = date;
 	}
 
+	public int getProductID() {
+		return productID;
+	}
+
+	public void setProductID(int productID) {
+		this.productID = productID;
+	}
+
 	@Override
 	public String toString() {
-		return "[ headline=" + headline + ", reporter Name=" + reporterName + " , date=" + date + "]";
+		return "ListItemCustom [headline=" + headline + ", date=" + date
+				+ ", url=" + url + "]";
 	}
+	
+	
 }

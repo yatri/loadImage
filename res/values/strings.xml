@@ -3,7 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="app_name">Loadimage</string>
+    <string name="app_name">Product List</string>
     <string name="action_refresh">Refresh</string>
 
     <array name="images_array">
@@ -25,6 +25,7 @@
         <item>Life convict can`t claim freedom after 14 yrs: SC</item>
     </array>
 
-    <string name="title_activity_product_detail">Product_detail</string>
+    <string name="title_activity_product_detail">Product Detail</string>
+    <string name="title_activity_loader">Category List</string>
 
 </resources>
