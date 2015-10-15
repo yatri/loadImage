@@ -9,6 +9,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import android.support.v7.app.ActionBarActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,7 +21,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -40,16 +46,23 @@ public class Product_detail extends ActionBarActivity {
 	String types = "";
 	String price = "";
 	ImageView productImg;
-	TextView nameTxt,desTxt;
+	TextView nameTxt, desTxt;
 	Spinner spinnertypes;
 	LinearLayout cangone;
+	Button submit;
+	EditText qty;
 	JSONParser jsonParser = new JSONParser();
+	Submitdata submitdata = new Submitdata();;
 	private static String product_page = "http://192.168.40.80:81/loginapi/index.php/loadimage";
 	ArrayList<String> listspinner = new ArrayList<String>();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.product_detail);
+		submit = (Button) findViewById(R.id.btnSubmit);
+		qty = (EditText) findViewById(R.id.quantity);
+		spinnertypes = (Spinner) findViewById(R.id.spType);
 		Intent intent = getIntent();
 		productid = intent.getIntExtra("prod_id", 0);
 		if (productid == 0) {
@@ -59,12 +72,25 @@ public class Product_detail extends ActionBarActivity {
 			new GetSpecificProduct().execute();
 		}
 
+		submit.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				submitdata.setQty(Integer.parseInt(qty.getText().toString()));
+				submitdata.setType(spinnertypes.getSelectedItem().toString());
+				GsonBuilder builder = new GsonBuilder();
+				Gson gson = builder.create();
+				String jonstring = gson.toJson(submitdata);
+				
+				Log.d("submitdta", submitdata.toString());
+			}
+		});
+
 		Toast.makeText(Product_detail.this, "You got Productid :" + productid,
 				Toast.LENGTH_LONG).show();
 	}
 
 	class GetSpecificProduct extends AsyncTask<String, String, String> {
 		JSONArray typearray;
+
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(Product_detail.this);
@@ -94,13 +120,13 @@ public class Product_detail extends ActionBarActivity {
 					myproduct.setProductID(productid);
 					types = json.getString(TAG_TYPES);
 					typearray = new JSONArray(types);
-					
-					if (typearray != null) { 
-						   int len = typearray.length();
-						   for (int i=0;i<len;i++){ 
-							   listspinner.add(typearray.get(i).toString());
-						   } 
-						} 
+
+					if (typearray != null) {
+						int len = typearray.length();
+						for (int i = 0; i < len; i++) {
+							listspinner.add(typearray.get(i).toString());
+						}
+					}
 					// new ImageDownloaderTask(holder.imageView)
 					// .execute(imageurl);
 					Log.d("types", listspinner.toString());
@@ -113,25 +139,28 @@ public class Product_detail extends ActionBarActivity {
 
 		protected void onPostExecute(String file_url) {
 			pDialog.dismiss();
+
 			productImg = (ImageView) findViewById(R.id.thumbImage);
 			nameTxt = (TextView) findViewById(R.id.setname);
 			desTxt = (TextView) findViewById(R.id.setdes);
 			spinnertypes = (Spinner) findViewById(R.id.spType);
 			cangone = (LinearLayout) findViewById(R.id.goneDiv);
-			if(!listspinner.isEmpty()){
-				ArrayAdapter<String> type_sp_adaptor = new ArrayAdapter<String>(getApplicationContext(),
-					     android.R.layout.simple_spinner_item, listspinner);
+			submitdata.setUserid(2);
+			submitdata.setProdid(productid);
+			if (!listspinner.isEmpty()) {
+				ArrayAdapter<String> type_sp_adaptor = new ArrayAdapter<String>(
+						getApplicationContext(),
+						android.R.layout.simple_spinner_item, listspinner);
 				spinnertypes.setAdapter(type_sp_adaptor);
-				Log.d("elsegone","no");
-			}else{
-				Log.d("elsegone","yes");
+				Log.d("elsegone", "no");
+			} else {
+				Log.d("elsegone", "yes");
 				cangone.setVisibility(View.GONE);
 			}
-			
+
 			nameTxt.setText(name);
 			desTxt.setText(description);
-			new ImageDownloaderTask(productImg)
-			.execute(imageurl);
+			new ImageDownloaderTask(productImg).execute(imageurl);
 		}
 
 	}

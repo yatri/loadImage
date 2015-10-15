@@ -2029,7 +2029,6 @@ containing a value of this type.
         public static final int decor_content_parent=0x7f09003c;
         public static final int default_activity_button=0x7f090027;
         public static final int disableHome=0x7f09000d;
-        public static final int editText1=0x7f090068;
         public static final int edit_query=0x7f090040;
         public static final int end=0x7f09001f;
         public static final int end_padder=0x7f09005f;
@@ -2055,7 +2054,8 @@ containing a value of this type.
         public static final int parentPanel=0x7f09002b;
         public static final int progress_circular=0x7f090007;
         public static final int progress_horizontal=0x7f090008;
-        public static final int quantity=0x7f090067;
+        public static final int quantity=0x7f090068;
+        public static final int quantitytxt=0x7f090067;
         public static final int radio=0x7f090038;
         public static final int reporter=0x7f090051;
         public static final int screen=0x7f090015;
